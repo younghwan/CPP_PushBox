@@ -1,0 +1,37 @@
+1.https://sourceforge.net/projects/mingw-w64/ 에서 다운후 설치
+settings에서 Architecture를 x86_64 , Threads: win32로 설정
+
+2.환경변수에서 시스템변수-path에 C:\Program Files\mingw-64\x86_64-8.1.0-win32-seh-rt_v6-rev0\bin\ 추가
+
+3.C:\Program Files\mingw-64\x86_64-8.1.0-win32-seh-rt_v6-rev0\bin 폴더 들어가서 
+mingw-32make.exe 파일 이름을 make.exe로 수정
+
+*위에 설정 완료됐으면 windows환경에서 make,g++ 명령어 사용가능
+
+4. https://sourceforge.net/projects/pdcurses/files/pdcurses/3.8/PDCurses-3.8.zip/download 로 이동하여
+C:\에 다운로드후 압축해제, 폴더명을 pdcurses로 수정 (만약 pdcurses 폴더안에 pdcurses폴더로 존재할경우, 안에 파일들을 상위폴더로 꺼내준다.)
+
+5.cmd 창 실행, cd C:\pdcurses\wincon 명령어 실행
+
+6.set PDCURSES_SRCDIR=c:\pdcurses
+
+ 명령어 실행
+
+7.make -f Makefile WID=Y UTF8=Y DLL=Y 명령어 실행
+
+8.사용할 프로젝트 오른쪽 클릭후 속성 클릭 
+1) 디버깅 항목 클릭
+  환경 항목에 C:\pdcurses\wincon\ 추가
+2) VC++ 디렉터리를 클릭
+   - 포함 디렉터리의 맨 앞에 C:\pdcurses; 추가
+   - 라이브러리 디렉터리의 맨 앞에 C:\pdcurses\wincon; 추가
+3-1) C/C++ 항목의 일반 탭 클릭
+  추가 포함 디렉터리 맨 앞에 C:\pdcurses; 추가
+3-2) C/C++ 항목의 코드생성 탭 클릭
+  런타임 라이브러리를 "다중 스레드 디버그(/MTd)" 로 변경
+4-1) 링커 항목의 일반 탭 클릭
+  추가 라이브러리 디렉터리 맨 앞에 C:\pdcurses\wincon; 추가
+4-2) 링커 항목의 입력 탭 클릭
+  추가 종속성 항목의 맨 앞에 pdcurses.a; 을 추가
+
+9. curses.h을 열고 define 부분에 #define PDC_DLL_BUILD	1 선언
