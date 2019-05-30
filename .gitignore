@@ -3,10 +3,16 @@
 
 #Debug folder
 Debug/
+Release/
+x64/
+x86/
 
 #User specification files
 *.user
 *.suo
 
-#
-Release/
+#Visual Studio
+.vs/
+*.sln
+*.vcxproj
+*.filters
