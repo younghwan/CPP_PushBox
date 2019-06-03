@@ -1,9 +1,18 @@
 #include "PushBoxGame.h"
+#include "curses.h"
+
 
 int main()
 {
-	WINDOW *win1, *win2, *win3, *win4, *win5;
+	PushBoxGame game;
 
+	WINDOW* win1, * win2, * win3, * win4, * win5;
+
+	char* arr = new char[11]; 
+	for (int i = 0; i < 11; i++) {
+		arr[i] = i + 65;
+	}
+	setlocale(LC_CTYPE, "ko_KR.utf-8");
 	initscr();
 	resize_term(35, 95);
 	start_color();
@@ -12,7 +21,7 @@ int main()
 	init_pair(1, COLOR_WHITE, COLOR_BLACK);
 	border('*', '*', '*', '*', '*', '*', '*', '*');
 	refresh();
-
+	//getch();
 
 	win5 = newwin(27, 70, 4, 2);
 	win1 = newwin(3, 15, 8, 75);
@@ -41,13 +50,38 @@ int main()
 	wborder(win3, '|', '|', '-', '-', '+', '+', '+', '+');
 	wborder(win4, '|', '|', '-', '-', '+', '+', '+', '+');
 	wborder(win5, '|', '|', '-', '-', '+', '+', '+', '+');
+
+	for (int i = 0; i < 10; i++) {
+		for (int j = 0; j < 20; j+=2) {
+			switch (game.map[i][j/2])
+			{
+			case 1:mvwprintw(win5, i + 1, j + 1, "бс");
+				break;
+			case 2:mvwprintw(win5, i + 1, j + 1, "бр");
+				break;
+			case 0:mvwprintw(win5, i + 1, j + 1, " ");
+				break;
+			case 3:mvwprintw(win5, i + 1, j + 1, "в═");
+				break;
+			case 4:mvwprintw(win5, i + 1, j + 1, " ");
+				break;
+			}
+		}
+	}
+
 	wrefresh(win1);
 	wrefresh(win2);
 	wrefresh(win3);
 	wrefresh(win4);
 	wrefresh(win5);
+
 	getch();
+
 	delwin(win1);
+	delwin(win2);
+	delwin(win3);
+	delwin(win4);
+	delwin(win5);
 	endwin();
 	return 0;
 }

@@ -7,7 +7,7 @@
 #include <vector>
 #include <conio.h>
 #include <time.h>
-#include "curses.h"
+
 
 using namespace std;
 
@@ -22,12 +22,13 @@ private:
 	int push = 0;
 	clock_t startTimer;
 	clock_t endTimer;
-	int** map;
 	COORDINATE position;
 	vector<COORDINATE> goalList;
 	vector<vector<int>> records;
 	
 public:
+	char** map;
+
 	PushBoxGame();
 	int getLevel();
 	void setLevel(int);

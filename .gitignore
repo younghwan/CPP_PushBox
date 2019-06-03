@@ -16,3 +16,6 @@ x86/
 *.sln
 *.vcxproj
 *.filters
+
+#System
+*.dll
