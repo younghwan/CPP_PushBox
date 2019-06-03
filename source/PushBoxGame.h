@@ -7,7 +7,7 @@
 #include <vector>
 #include <conio.h>
 #include <time.h>
-
+#include "curses.h"
 
 using namespace std;
 
