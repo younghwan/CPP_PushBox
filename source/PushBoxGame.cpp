@@ -6,10 +6,10 @@ PushBoxGame::PushBoxGame()
 	in.open("level1.txt");
 	in >> position.first >> position.second;
 
-	map = new int* [MAX_SIZE_ROW];
+	map = new char* [MAX_SIZE_ROW];
 	for (int i = 0; i < MAX_SIZE_ROW; i++) {
 		int temp;
-		map[i] = new int[MAX_SIZE_COL];
+		map[i] = new char[MAX_SIZE_COL];
 		for (int j = 0; j < MAX_SIZE_COL; j++) {
 			in >> temp;
 			map[i][j] = temp;
@@ -148,11 +148,9 @@ void PushBoxGame::afterProcess()
 		records.push_back(rec);
 		if (getLevel() == FINALLEVEL) {
 			cout << "##### Congraturation! You complete final level #####" << endl;
-			Sleep(1000);
 		}
 		else {
 			cout << "############## SUCCESS ##############" << endl;
-			Sleep(1000);
 			setLevel(getLevel() + 1);
 			setStep(0);
 			setPush(0);
