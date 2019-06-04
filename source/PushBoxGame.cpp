@@ -169,7 +169,100 @@ void PushBoxGame::testGoToLevel2()
 	return;
 }
 
-void PushBoxGame::move(int input)
+bool PushBoxGame::IsinMapNow() const
 {
-	return;
+    if(userposition.x < MAX_SIZE_ROW && userposition.x > 0 && userposition.y < MAX_SIZE_COL &&userposition.y > 0)
+    {
+        return true;
+    }
+    return false;
+}
+
+bool PushBoxGame::IsinMapNow(int dy,int dx) const
+{
+    if(dx < MAX_SIZE_ROW && dx >0 && dy < MAX_SIZE_COL && dy > 0)
+    {
+        return true;    
+    }
+    return false;
+}
+
+bool PushBoxGame::CheckPosition(Position userposition)
+{
+	if(!IsinMapNow())
+    {
+        return false;
+    }
+
+	int dx = getX() + userposition.x;
+    int dy = getY() + userposition.y;
+
+	if(!IsinMapNow(dy,dx))
+    {
+        return false;
+    };
+
+	if(map[dy][dx]==1)
+    {
+        return false;
+    }
+	return true;
+}
+
+void PushBoxGame::move(Position userposition)
+{
+
+	int curX = getX();
+    int curY = getY();
+
+	int nextX = curX + userposition.x;
+    int nextY = curY + userposition.y;
+
+	setX(nextX);
+    setY(nextY);
+
+	if(map[nextY][nextX] == WALL )
+	{
+		return;
+	}
+
+	if(map[nextY][nextX] == BOX)
+	{
+		int nextPosBox_X = nextX + userposition.x;
+		int nextPosBox_Y = nextY + userposition.y;
+
+		if(map[nextPosBox_Y][nextPosBox_X]
+		==BOX ||map[nextPosBox_Y][nextPosBox_X] == WALL )
+		{
+			return;
+		}
+
+		map[curY][curX] = EMPTY;
+		map[nextY][nextX] = PLAYER;
+		map[nextPosBox_Y][nextPosBox_X] = BOX;
+		return;
+	}
+	map[curY][curX] = EMPTY;
+	map[nextY][nextX] = PLAYER;
+
+}
+
+void PushBoxGame::setX(int input)
+{
+	userposition.x = input;
+}
+
+void PushBoxGame::setY(int input)
+{
+	userposition.y = input;
+}
+
+int PushBoxGame::getX()
+{
+	return userposition.x;
+}
+
+int PushBoxGame::getY()
+{
+	return userposition.y;
 }

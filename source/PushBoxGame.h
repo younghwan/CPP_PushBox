@@ -5,11 +5,25 @@
 #include <fstream>
 #include <string>
 #include <vector>
-#include <conio.h>
 #include <time.h>
 
-
 using namespace std;
+
+enum
+{
+	EMPTY = 0,
+	WALL = 1,
+	BOX = 2,
+	HOLE = 3,
+	BOUND =4,
+	PLAYER =5
+};
+
+
+struct Position
+{
+    int x,y;
+};
 
 class PushBoxGame
 {
@@ -24,7 +38,8 @@ private:
 	clock_t endTimer;
 	COORDINATE position;
 	vector<COORDINATE> goalList;
-	vector<vector<int>> records;
+	vector<vector<int> > records;
+	Position userposition;
 	
 public:
 	char** map;
@@ -45,5 +60,13 @@ public:
 	void showGoalList();
 	void afterProcess();
 	void testGoToLevel2();
-	void move(int);
+	void move(Position userposition);
+	void setX(int);
+	void setY(int);
+	int getX();
+	int getY();
+	bool CheckPosition(Position movePos);
+	bool IsinMapNow() const;
+    bool IsinMapNow(int dy,int dx) const;
+	
 };
