@@ -5,13 +5,9 @@
 class GameViewer {
 public:
 	GameViewer() {};
-	void test() {
-		pushBoxGame.map[0][0] = 2;
-
-	}
-
-	void setPushBoxGame(PushBoxGame& pushBoxGame) {
-		this->pushBoxGame = pushBoxGame;
+	GameViewer(const PushBoxGame& model)
+	{
+		this->pushBoxGame = model;
 	}
 
 	void renderLevelBoard(WINDOW* levelBoard) {
@@ -19,7 +15,6 @@ public:
 		wrefresh(levelBoard);
 		return;
 	}
-
 	void renderStepBoard(WINDOW* stepBoard) {
 		mvwprintw(stepBoard, 1, 8, " ");
 		wrefresh(stepBoard);
@@ -35,18 +30,18 @@ public:
 		wrefresh(timeBoard);
 		return;
 	}
-	void renderGameBoard(WINDOW *gameBoard) {
+	void renderGameBoard(WINDOW* gameBoard) {
 		for (int i = 0; i < 10; i++) {
-			for (int j = 0; j < 20; j += 2) {
-				switch (pushBoxGame.map[i][j / 2])
+			for (int j = 0; j < 10; j++) {
+				switch (pushBoxGame.getMap(i, j))
 				{
 				case EMPTY:mvwprintw(gameBoard, i + 1, j + 1, " ");
 					break;
-				case WALL:mvwprintw(gameBoard, i + 1, j + 1, "бс");
+				case WALL:mvwprintw(gameBoard, i + 1, j + 1, "#");
 					break;
-				case BOX:mvwprintw(gameBoard, i + 1, j + 1, "бр");
+				case BOX:mvwprintw(gameBoard, i + 1, j + 1, "B");
 					break;
-				case HOLE:mvwprintw(gameBoard, i + 1, j + 1, "в═");
+				case GOAL:mvwprintw(gameBoard, i + 1, j + 1, "X");
 					break;
 				case BOUND:mvwprintw(gameBoard, i + 1, j + 1, " ");
 					break;

@@ -13,6 +13,7 @@ using namespace std;
 class PushBoxGame
 {
 private:
+	char** map;
 	int rowMax = 10;
 	int colMax = 10;
 	int level = 1;
@@ -21,17 +22,13 @@ private:
 	Coordinates userPosition;
 	vector<Coordinates> goalList;
 	vector<vector<int> > records;
-	
-public:
-	char** map;
 
+public:
 	PushBoxGame() {
 		ifstream in;
 		in.open("level1.txt");
-		int a, b;
-		in >> a >> b;
-		setX_userPosition(a);
-		setY_userPosition(b);
+		in >> userPosition.x >> userPosition.y;
+
 		map = new char* [rowMax];
 		for (int i = 0; i < rowMax; i++) {
 			int temp;
@@ -49,19 +46,19 @@ public:
 	{
 		return level;
 	}
-	void setLevel(int input)
+	void setLevel(const int& input)
 	{
 		this->level = input;
 		return;
 	}
-	Coordinates getUserPosition()
+	Coordinates getUserPos()
 	{
 		return userPosition;
 	}
-	void setUserPosition(Coordinates input)
+	void setUserPos(const Coordinates& input)
 	{
-		userPosition.x = input.x;
-		userPosition.y = input.y;
+		this->userPosition.x = input.x;
+		this->userPosition.y = input.y;
 		return;
 	}
 	int getStep()
@@ -82,19 +79,19 @@ public:
 		this->push = input;
 		return;
 	}
-	void setX_userPosition(const int& input)
+	void setX_userPos(const int& input)
 	{
 		this->userPosition.x = input;
 	}
-	void setY_userPosition(const int& input)
+	void setY_userPos(const int& input)
 	{
 		this->userPosition.y = input;
 	}
-	int getX_userPosition()
+	int getX_userPos()
 	{
 		return userPosition.x;
 	}
-	int getY_userPosition()
+	int getY_userPos()
 	{
 		return userPosition.y;
 	}
@@ -113,27 +110,6 @@ public:
 	void addRecords(vector<int> input) {
 		records.push_back(input);
 	}
-	void pushBoxGameInit() {
-		ifstream in;
-		in.open("level1.txt");
-		int a, b;
-		in >> a >> b;
-		setX_userPosition(a);
-		setY_userPosition(b);
-		map = new char* [rowMax];
-		for (int i = 0; i < rowMax; i++) {
-			int temp;
-			map[i] = new char[colMax];
-			for (int j = 0; j < colMax; j++) {
-				in >> temp;
-				map[i][j] = temp;
-				if (temp == 3) {
-					goalList.push_back(Coordinates(i, j));
-				}
-			}
-		}
-	}
-
 	void readMap()
 	{
 		ifstream in;
@@ -156,5 +132,12 @@ public:
 		}
 		return;
 	}
-	
+	void setMap(const Coordinates& i, const char& c)
+	{
+		this->map[i.x][i.y] = c;
+	}
+	char getMap(int a, int b)
+	{
+		return map[a][b];
+	}
 };

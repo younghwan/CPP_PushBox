@@ -19,7 +19,7 @@ enum
 	EMPTY = 0,
 	WALL,
 	BOX,
-	HOLE,
+	GOAL,
 	BOUND,
 	PLAYER
 };
