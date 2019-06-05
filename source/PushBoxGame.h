@@ -6,67 +6,155 @@
 #include <string>
 #include <vector>
 #include <time.h>
+#include "curses.h"
 
 using namespace std;
-
-enum
-{
-	EMPTY = 0,
-	WALL = 1,
-	BOX = 2,
-	HOLE = 3,
-	BOUND =4,
-	PLAYER =5
-};
-
-
-struct Position
-{
-    int x,y;
-};
 
 class PushBoxGame
 {
 private:
-	const int MAX_SIZE_ROW = 10;
-	const int MAX_SIZE_COL = 10;
-	const int FINALLEVEL = 5;
+	int rowMax = 10;
+	int colMax = 10;
 	int level = 1;
 	int step = 0;
 	int push = 0;
-	clock_t startTimer;
-	clock_t endTimer;
-	COORDINATE position;
-	vector<COORDINATE> goalList;
+	Coordinates userPosition;
+	vector<Coordinates> goalList;
 	vector<vector<int> > records;
-	Position userposition;
 	
 public:
 	char** map;
 
-	PushBoxGame();
-	int getLevel();
-	void setLevel(int);
-	COORDINATE getPosition();
-	void setPosition(COORDINATE);
-	int getStep();
-	void setStep(int);
-	int getPush();
-	void setPush(int);
-	void readMap();
-	void showMap();
-	bool isSuccess();
-	void showWithPlayer();
-	void showGoalList();
-	void afterProcess();
-	void testGoToLevel2();
-	void move(Position userposition);
-	void setX(int);
-	void setY(int);
-	int getX();
-	int getY();
-	bool CheckPosition(Position movePos);
-	bool IsinMapNow() const;
-    bool IsinMapNow(int dy,int dx) const;
+	PushBoxGame() {
+		ifstream in;
+		in.open("level1.txt");
+		int a, b;
+		in >> a >> b;
+		setX_userPosition(a);
+		setY_userPosition(b);
+		map = new char* [rowMax];
+		for (int i = 0; i < rowMax; i++) {
+			int temp;
+			map[i] = new char[colMax];
+			for (int j = 0; j < colMax; j++) {
+				in >> temp;
+				map[i][j] = temp;
+				if (temp == 3) {
+					goalList.push_back(Coordinates(i, j));
+				}
+			}
+		}
+	};
+	int getLevel()
+	{
+		return level;
+	}
+	void setLevel(int input)
+	{
+		this->level = input;
+		return;
+	}
+	Coordinates getUserPosition()
+	{
+		return userPosition;
+	}
+	void setUserPosition(Coordinates input)
+	{
+		userPosition.x = input.x;
+		userPosition.y = input.y;
+		return;
+	}
+	int getStep()
+	{
+		return step;
+	}
+	void setStep(const int& input)
+	{
+		this->step = input;
+		return;
+	};
+	int getPush()
+	{
+		return push;
+	}
+	void setPush(const int& input)
+	{
+		this->push = input;
+		return;
+	}
+	void setX_userPosition(const int& input)
+	{
+		this->userPosition.x = input;
+	}
+	void setY_userPosition(const int& input)
+	{
+		this->userPosition.y = input;
+	}
+	int getX_userPosition()
+	{
+		return userPosition.x;
+	}
+	int getY_userPosition()
+	{
+		return userPosition.y;
+	}
+	int getRow() {
+		return rowMax;
+	}
+	int getCol() {
+		return colMax;
+	}
+	vector<Coordinates> getGoalList() {
+		return goalList;
+	}
+	vector<vector<int> > getRecords() {
+		return records;
+	}
+	void addRecords(vector<int> input) {
+		records.push_back(input);
+	}
+	void pushBoxGameInit() {
+		ifstream in;
+		in.open("level1.txt");
+		int a, b;
+		in >> a >> b;
+		setX_userPosition(a);
+		setY_userPosition(b);
+		map = new char* [rowMax];
+		for (int i = 0; i < rowMax; i++) {
+			int temp;
+			map[i] = new char[colMax];
+			for (int j = 0; j < colMax; j++) {
+				in >> temp;
+				map[i][j] = temp;
+				if (temp == 3) {
+					goalList.push_back(Coordinates(i, j));
+				}
+			}
+		}
+	}
+
+	void readMap()
+	{
+		ifstream in;
+		string a = "level";
+		string b = to_string(getLevel());
+		string c = ".txt";
+		in.open(a + b + c);
+		in >> userPosition.x >> userPosition.y;
+
+		goalList.clear();
+		for (int i = 0; i < rowMax; i++) {
+			int temp;
+			for (int j = 0; j < colMax; j++) {
+				in >> temp;
+				map[i][j] = temp;
+				if (temp == 3) {
+					goalList.push_back(Coordinates(i, j));
+				}
+			}
+		}
+		return;
+	}
 	
 };
