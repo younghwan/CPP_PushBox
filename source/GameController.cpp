@@ -96,9 +96,23 @@ bool GameController::CheckPosition(Coordinates userposition)
 	return true;
 }
 
+void GameController::setGoalPos(vector<Coordinates> goalList)
+{
+	for(int i = 0; i<goalList.size(); i++)
+	{
+		int goalX = goalList[i].x;
+		int goalY = goalList[i].y;
+
+		if(pushBoxGame.getMap(goalY,goalX) == EMPTY)
+		{
+			pushBoxGame.setMap(Coordinates(goalY, goalX), GOAL);
+		}
+	}	
+}
 void GameController::move(Coordinates userposition)
 {
-
+	pushBoxGame.addStep();
+	
 	int curX = pushBoxGame.getX_userPos();
 	int curY = pushBoxGame.getY_userPos();
 
@@ -113,6 +127,8 @@ void GameController::move(Coordinates userposition)
 		return;
 	}
 
+
+	//BOX를 밀때
 	if (pushBoxGame.getMap(nextY, nextX) == BOX)
 	{
 		int nextPosBox_X = nextX + userposition.x;
@@ -127,6 +143,7 @@ void GameController::move(Coordinates userposition)
 		pushBoxGame.setMap(Coordinates(curY, curX), EMPTY);
 		pushBoxGame.setMap(Coordinates(nextY, nextX), PLAYER);
 		pushBoxGame.setMap(Coordinates(nextPosBox_Y, nextPosBox_X), BOX);
+		pushBoxGame.addPush();
 		return;
 	}
 	pushBoxGame.setMap(Coordinates(curY, curX), EMPTY);
@@ -149,8 +166,8 @@ void GameController::postProcessing()
 		else {
 			cout << "############## SUCCESS ##############" << endl;
 			pushBoxGame.setLevel(pushBoxGame.getLevel() + 1);
-			pushBoxGame.setStep(0);
-			pushBoxGame.setPush(0);
+			pushBoxGame.stepClear();
+			pushBoxGame.pushClear();
 			pushBoxGame.readMap();
 		}
 	}

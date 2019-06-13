@@ -33,8 +33,9 @@ int main()
 			gameController.move(Coordinates(-1, 0));
 			break;
 		}
+		gameController.setGoalPos(pushBoxGame.getGoalList());
 		gameViewer.renderAll(gameController.levelBoard, gameController.stepBoard, gameController.pushBoard, gameController.timeBoard, gameController.gameBoard);
-
+		
 	}
 
 	getch();
