@@ -21,6 +21,7 @@ public:
 	bool isSuccess();
 	WINDOW* levelBoard, * stepBoard, * pushBoard, * timeBoard, * gameBoard;
 	PushBoxGame pushBoxGame;
+	void goNextLevel();
 
 private:
 	const int FINALLEVEL = 5;

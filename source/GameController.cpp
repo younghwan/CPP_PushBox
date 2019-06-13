@@ -1,21 +1,26 @@
 #include "GameController.h"
 
 void GameController::gameInitialize() {
-	setlocale(LC_CTYPE, "ko_KR.utf-8");
+	setlocale(LC_ALL, "");
 	initscr();
-	resize_term(35, 95);
+	resize_term(27, 65);
 	start_color();
 	curs_set(0);
 	noecho();
 	init_pair(1, COLOR_WHITE, COLOR_BLACK);
-	border('*', '*', '*', '*', '*', '*', '*', '*');
+	init_pair(2, COLOR_BLACK, COLOR_WHITE); //EMPTY color
+	init_pair(3, COLOR_WHITE, COLOR_MAGENTA); //BLOCK color
+	init_pair(4, COLOR_WHITE, COLOR_YELLOW); //BOX color
+	init_pair(5, COLOR_WHITE, COLOR_GREEN); //GOAL color
+	init_pair(6, COLOR_WHITE, COLOR_RED); //PLAYER color
+	mvprintw(2, 20, "P"); mvprintw(2, 22, "U"); mvprintw(2, 24, "S"); mvprintw(2, 26, "H"); mvprintw(2, 30, "B"); mvprintw(2, 32, "O"); mvprintw(2, 34, "X"); mvprintw(2, 38, "G"); mvprintw(2, 40, "A"); mvprintw(2, 42, "M"); mvprintw(2, 44, "E");
 	refresh();
 
-	gameBoard = newwin(27, 70, 4, 2);
-	levelBoard = newwin(3, 15, 8, 75);
-	stepBoard = newwin(3, 15, 12, 75);
-	pushBoard = newwin(3, 15, 16, 75);
-	timeBoard = newwin(3, 15, 20, 75);
+	gameBoard = newwin(19, 40, 6, 2);
+	levelBoard = newwin(3, 13, 8, 45);
+	stepBoard = newwin(3, 13, 12, 45);
+	pushBoard = newwin(3, 13, 16, 45);
+	timeBoard = newwin(3, 13, 20, 45);
 	wbkgd(levelBoard, COLOR_PAIR(1));
 	wattron(levelBoard, COLOR_PAIR(1));
 	wbkgd(stepBoard, COLOR_PAIR(1));
@@ -153,7 +158,9 @@ void GameController::move(Coordinates userposition)
 
 void GameController::postProcessing()
 {
-	//showWithPlayer();
+	setGoalPos(pushBoxGame.getGoalList());
+	gameViewer.renderAll(levelBoard, stepBoard, pushBoard, timeBoard, gameBoard);
+
 	if (isSuccess()) {
 		vector<int> rec;
 		rec.push_back(pushBoxGame.getStep());
@@ -161,14 +168,15 @@ void GameController::postProcessing()
 		//rec.push_back((int)(startTimer - endTimer));
 		pushBoxGame.addRecords(rec);
 		if (pushBoxGame.getLevel() == FINALLEVEL) {
-			cout << "##### Congraturation! You complete final level #####" << endl;
+			//cout << "##### Congraturation! You complete final level #####" << endl;
 		}
 		else {
-			cout << "############## SUCCESS ##############" << endl;
+			//cout << "############## SUCCESS ##############" << endl;
 			pushBoxGame.setLevel(pushBoxGame.getLevel() + 1);
 			pushBoxGame.stepClear();
 			pushBoxGame.pushClear();
 			pushBoxGame.readMap();
+			gameViewer.renderAll(levelBoard, stepBoard, pushBoard, timeBoard, gameBoard);
 		}
 	}
 	return;
@@ -179,7 +187,7 @@ bool GameController::isSuccess()
 	for (int i = 0; i < pushBoxGame.getGoalList().size(); i++) {
 		int x = pushBoxGame.getGoalList()[i].x;
 		int y = pushBoxGame.getGoalList()[i].y;
-		if (pushBoxGame.getMap(x, y) == 2) {
+		if (pushBoxGame.getMap(y, x) == 2) {
 			continue;
 		}
 		else {
@@ -187,4 +195,14 @@ bool GameController::isSuccess()
 		}
 	}
 	return true;
+}
+
+void GameController::goNextLevel()
+{
+	for (int i = 0; i < pushBoxGame.getGoalList().size(); i++) {
+		int x = pushBoxGame.getGoalList()[i].x;
+		int y = pushBoxGame.getGoalList()[i].y;
+		pushBoxGame.setMap(Coordinates(y, x), 2);
+	}
+	return;
 }

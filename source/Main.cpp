@@ -32,9 +32,14 @@ int main()
 		case KEY_LEFT: //left
 			gameController.move(Coordinates(-1, 0));
 			break;
+		case 'n':
+			gameController.goNextLevel();
+			break;
 		}
+		
 		gameController.setGoalPos(pushBoxGame.getGoalList());
-		gameViewer.renderAll(gameController.levelBoard, gameController.stepBoard, gameController.pushBoard, gameController.timeBoard, gameController.gameBoard);
+		gameController.postProcessing();
+		//gameViewer.renderAll(gameController.levelBoard, gameController.stepBoard, gameController.pushBoard, gameController.timeBoard, gameController.gameBoard);
 		
 	}
 

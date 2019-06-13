@@ -12,18 +12,19 @@ public:
 	}
 
 	void renderLevelBoard(WINDOW* levelBoard) {
-		mvwprintw(levelBoard, 1, 8, " ");
+		mvwprintw(levelBoard, 1, 8, "%d", pushBoxGame.getGoalList()[1].x);
 		wrefresh(levelBoard);
 		return;
 	}
 	void renderStepBoard(WINDOW* stepBoard) {
 		int i = pushBoxGame.getStep();
-		mvwprintw(stepBoard, 1, 8, " ");
+		
+		mvwprintw(stepBoard, 1, 8, "%d", pushBoxGame.getMap(pushBoxGame.getGoalList()[i].x, pushBoxGame.getGoalList()[i].y) );
 		wrefresh(stepBoard);
 		return;
 	}
 	void renderPushBoard(WINDOW* pushBoard) {
-		mvwprintw(pushBoard, 1, 8, " ");
+		mvwprintw(pushBoard, 1, 8, "%d", pushBoxGame.getGoalList()[1].x);
 		wrefresh(pushBoard);
 		return;
 	}
@@ -33,25 +34,60 @@ public:
 		return;
 	}
 	void renderGameBoard(WINDOW* gameBoard) {
+		int rowHandle = (19 - pushBoxGame.getRow()) / 2;
+		int colHandle = (40 - pushBoxGame.getCol() * 2) / 2;
 		for (int i = 0; i < 10; i++) {
-			for (int j = 0; j < 10; j++) {
-				switch (pushBoxGame.getMap(i, j))
+			for (int j = 0; j < 20; j++) {
+				switch (pushBoxGame.getMap(i, j / 2))
 				{
-				case EMPTY:mvwprintw(gameBoard, i + 1, j + 1, " ");
+				case EMPTY:
+					wattron(gameBoard, COLOR_PAIR(2));
+					mvwprintw(gameBoard, i + rowHandle, j + colHandle, " ");
+					wattroff(gameBoard, COLOR_PAIR(2));
 					break;
-				case WALL:mvwprintw(gameBoard, i + 1, j + 1, "#");
+				case WALL:
+					wattron(gameBoard, COLOR_PAIR(3));
+					mvwprintw(gameBoard, i + rowHandle, j + colHandle, " ");
+					wattroff(gameBoard, COLOR_PAIR(3));
 					break;
-				case BOX:mvwprintw(gameBoard, i + 1, j + 1, "B");
+				case BOX:
+					wattron(gameBoard, COLOR_PAIR(4));
+					if (j % 2 == 0) {
+						mvwprintw(gameBoard, i + rowHandle, j + colHandle, "I");
+					}
+					else {
+						mvwprintw(gameBoard, i + rowHandle, j + colHandle, "I");
+					}
+					wattroff(gameBoard, COLOR_PAIR(4));
 					break;
-				case GOAL:mvwprintw(gameBoard, i + 1, j + 1, "X");
+				case GOAL:
+					wattron(gameBoard, COLOR_PAIR(5));
+					if (j % 2 == 0) {
+						mvwprintw(gameBoard, i + rowHandle, j + colHandle, ">");
+					}
+					else
+					{
+						mvwprintw(gameBoard, i + rowHandle, j + colHandle, "<");
+					}
+					wattroff(gameBoard, COLOR_PAIR(5));
 					break;
-				case BOUND:mvwprintw(gameBoard, i + 1, j + 1, " ");
+				case BOUND:mvwprintw(gameBoard, i + rowHandle, j + colHandle, " ");
 					break;
-				case PLAYER:mvwprintw(gameBoard, i + 1, j + 1, "P");
+				case PLAYER:
+					wattron(gameBoard, COLOR_PAIR(6));
+					if (j % 2 == 0) {
+						mvwprintw(gameBoard, i + rowHandle, j + colHandle, "'");
+					}
+					else
+					{
+						mvwprintw(gameBoard, i + rowHandle, j + colHandle, "'");
+					}
+					wattroff(gameBoard, COLOR_PAIR(6));
 					break;
 				}
 			}
 		}
+
 		wrefresh(gameBoard);
 		return;
 	};

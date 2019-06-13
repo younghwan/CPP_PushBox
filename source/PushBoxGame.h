@@ -134,7 +134,7 @@ public:
 				in >> temp;
 				map[i][j] = temp;
 				if (temp == 3) {
-					goalList.push_back(Coordinates(i, j));
+					goalList.push_back(Coordinates(j, i));
 				}
 			}
 		}
