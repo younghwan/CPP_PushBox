@@ -37,7 +37,7 @@ public:
 				in >> temp;
 				map[i][j] = temp;
 				if (temp == 3) {
-					goalList.push_back(Coordinates(i, j));
+					goalList.push_back(Coordinates(j, i));
 				}
 			}
 		}
@@ -65,19 +65,27 @@ public:
 	{
 		return step;
 	}
-	void setStep(const int& input)
+	void addStep()
 	{
-		this->step = input;
+		this->step++;
 		return;
 	};
 	int getPush()
 	{
 		return push;
 	}
-	void setPush(const int& input)
+	void addPush()
 	{
-		this->push = input;
+		this->push++;
 		return;
+	}
+	void stepClear()
+	{
+		this->step =0;
+	}
+	void pushClear()
+	{
+		this->push =0;
 	}
 	void setX_userPos(const int& input)
 	{

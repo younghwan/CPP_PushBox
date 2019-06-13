@@ -2,6 +2,7 @@
 #include "PushBoxGame.h"
 #include "GameController.h"
 
+
 class GameViewer {
 public:
 	GameViewer() {};
@@ -16,6 +17,7 @@ public:
 		return;
 	}
 	void renderStepBoard(WINDOW* stepBoard) {
+		int i = pushBoxGame.getStep();
 		mvwprintw(stepBoard, 1, 8, " ");
 		wrefresh(stepBoard);
 		return;

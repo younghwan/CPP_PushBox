@@ -20,6 +20,7 @@ x86/
 #System
 *.dll
 
+<<<<<<< Updated upstream
 #Executable
 *.out
 *.exe
@@ -30,3 +31,7 @@ x86/
 
 #Log
 *.log
+=======
+#bin
+.vscode
+>>>>>>> Stashed changes

@@ -10,6 +10,7 @@ public:
 		this->pushBoxGame = model;
 		this->gameViewer = view;
 	}
+	void setGoalPos(vector<Coordinates> goalposition);
 	void gameInitialize();
 	void gameDelete();
 	bool IsinMapNow();
