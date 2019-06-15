@@ -33,3 +33,6 @@ x86/
 
 #bin
 .vscode
+
+#header file
+curses.h
