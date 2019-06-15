@@ -12,29 +12,32 @@ public:
 	}
 
 	void renderLevelBoard(WINDOW* levelBoard) {
-		mvwprintw(levelBoard, 1, 8, "%d", pushBoxGame->getGoalList()[1].x);
+		mvwprintw(levelBoard, 1, 8, "%d", pushBoxGame->getLevel());
 		wrefresh(levelBoard);
 		return;
 	}
 	void renderStepBoard(WINDOW* stepBoard) {
-		int i = pushBoxGame->getStep();
-		mvwprintw(stepBoard, 1, 8, "%d", i );
+		mvwprintw(stepBoard, 1, 8, "%d", pushBoxGame->getStep());
 		wrefresh(stepBoard);
 		return;
 	}
 	void renderPushBoard(WINDOW* pushBoard) {
-		mvwprintw(pushBoard, 1, 8, "%d", pushBoxGame->getGoalList()[1].x);
+		mvwprintw(pushBoard, 1, 8, "%d", pushBoxGame->getPush());
 		wrefresh(pushBoard);
 		return;
 	}
-	void renderTimeBoard(WINDOW* timeBoard) {
-		mvwprintw(timeBoard, 1, 8, " ");
-		wrefresh(timeBoard);
+	void renderTimeBoard(WINDOW* resetBoard) {
+		mvwprintw(resetBoard, 1, 8, "%d", pushBoxGame->getReset());
+		wrefresh(resetBoard);
 		return;
 	}
 	void renderGameBoard(WINDOW* gameBoard) {
 		int rowHandle = (19 - pushBoxGame->getRow()) / 2;
 		int colHandle = (40 - pushBoxGame->getCol() * 2) / 2;
+		int ux = pushBoxGame->getX_userPos();
+		int uy = pushBoxGame->getY_userPos();
+		char temp = pushBoxGame->getMap(uy, ux);
+		pushBoxGame->setMap(Coordinates(uy, ux), PLAYER);
 		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 20; j++) {
 				switch (pushBoxGame->getMap(i, j / 2))
@@ -86,22 +89,22 @@ public:
 				}
 			}
 		}
-
 		wrefresh(gameBoard);
+		pushBoxGame->setMap(Coordinates(uy, ux), temp);
 		return;
 	};
-	void renderAll(WINDOW* levelBoard, WINDOW* stepBoard, WINDOW* pushBoard, WINDOW* timeBoard, WINDOW* gameBoard) {
+	void renderAll(WINDOW* levelBoard, WINDOW* stepBoard, WINDOW* pushBoard, WINDOW* resetBoard, WINDOW* gameBoard) {
 		renderLevelBoard(levelBoard);
 		renderStepBoard(stepBoard);
 		renderPushBoard(pushBoard);
-		renderTimeBoard(timeBoard);
+		renderTimeBoard(resetBoard);
 		renderGameBoard(gameBoard);
 	}
-	void renderInit(WINDOW* levelBoard, WINDOW* stepBoard, WINDOW* pushBoard, WINDOW* timeBoard) {
+	void renderInit(WINDOW* levelBoard, WINDOW* stepBoard, WINDOW* pushBoard, WINDOW* resetBoard) {
 		mvwprintw(levelBoard, 1, 8, "   ");
 		mvwprintw(stepBoard, 1, 8, "   ");
 		mvwprintw(pushBoard, 1, 8, "   ");
-		mvwprintw(timeBoard, 1, 8, "   ");
+		mvwprintw(resetBoard, 1, 8, "   ");
 	}
 
 private:

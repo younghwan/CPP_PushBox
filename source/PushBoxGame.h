@@ -5,7 +5,6 @@
 #include <fstream>
 #include <string>
 #include <vector>
-#include <time.h>
 #include "curses.h"
 
 using namespace std;
@@ -19,6 +18,7 @@ private:
 	int level = 1;
 	int step = 0;
 	int push = 0;
+	int reset = 0;
 	Coordinates userPosition;
 	vector<Coordinates> goalList;
 	vector<vector<int> > records;
@@ -86,6 +86,19 @@ public:
 	void pushClear()
 	{
 		this->push =0;
+	}
+	int getReset()
+	{
+		return reset;
+	}
+	void addReset()
+	{
+		this->reset++;
+		return;
+	}
+	void resetClear()
+	{
+		step = 0;
 	}
 	void setX_userPos(const int& input)
 	{

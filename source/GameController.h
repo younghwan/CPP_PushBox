@@ -19,8 +19,9 @@ public:
 	void move(Coordinates userPos);
 	void postProcessing();
 	bool isSuccess();
-	WINDOW* levelBoard, * stepBoard, * pushBoard, * timeBoard, * gameBoard;
+	WINDOW* levelBoard, * stepBoard, * pushBoard, * resetBoard, * gameBoard;
 	void goNextLevel();
+	void reset();
 
 private:
 	const int FINALLEVEL = 5;
