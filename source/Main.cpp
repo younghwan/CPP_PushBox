@@ -7,17 +7,10 @@ int main()
 	GameController gameController(&pushBoxGame, &gameViewer);
 
 	gameController.gameInitialize();
-	gameViewer.renderAll(gameController.levelBoard, gameController.stepBoard, gameController.pushBoard, gameController.timeBoard, gameController.gameBoard);
+	gameViewer.renderAll(gameController.levelBoard, gameController.stepBoard, gameController.pushBoard, gameController.resetBoard, gameController.gameBoard);
+	keypad(stdscr, TRUE);
+
 	while (true) {
-		for (int i = 0; i < 10; i++) {
-			for (int j = 0; j < 10; j++) {
-				if (pushBoxGame.getMap(i, j) == 5)
-				{
-					pushBoxGame.setUserPos(Coordinates(j, i));
-				}
-			}
-		}
-		keypad(stdscr, TRUE);
 		switch (getch())
 		{
 		case KEY_UP: //up
@@ -35,12 +28,11 @@ int main()
 		case 'n':
 			gameController.goNextLevel();
 			break;
+		case 'r':
+			gameController.reset();
+			break;
 		}
-		
-		gameController.setGoalPos(pushBoxGame.getGoalList());
 		gameController.postProcessing();
-		//gameViewer.renderAll(gameController.levelBoard, gameController.stepBoard, gameController.pushBoard, gameController.timeBoard, gameController.gameBoard);
-		
 	}
 
 	getch();
