@@ -6,25 +6,24 @@
 class GameViewer {
 public:
 	GameViewer() {};
-	GameViewer(const PushBoxGame& model)
+	GameViewer(PushBoxGame* model)
 	{
-		this->pushBoxGame = model;
+		pushBoxGame = model;
 	}
 
 	void renderLevelBoard(WINDOW* levelBoard) {
-		mvwprintw(levelBoard, 1, 8, "%d", pushBoxGame.getGoalList()[1].x);
+		mvwprintw(levelBoard, 1, 8, "%d", pushBoxGame->getGoalList()[1].x);
 		wrefresh(levelBoard);
 		return;
 	}
 	void renderStepBoard(WINDOW* stepBoard) {
-		int i = pushBoxGame.getStep();
-		
-		mvwprintw(stepBoard, 1, 8, "%d", pushBoxGame.getMap(pushBoxGame.getGoalList()[i].x, pushBoxGame.getGoalList()[i].y) );
+		int i = pushBoxGame->getStep();
+		mvwprintw(stepBoard, 1, 8, "%d", i );
 		wrefresh(stepBoard);
 		return;
 	}
 	void renderPushBoard(WINDOW* pushBoard) {
-		mvwprintw(pushBoard, 1, 8, "%d", pushBoxGame.getGoalList()[1].x);
+		mvwprintw(pushBoard, 1, 8, "%d", pushBoxGame->getGoalList()[1].x);
 		wrefresh(pushBoard);
 		return;
 	}
@@ -34,11 +33,11 @@ public:
 		return;
 	}
 	void renderGameBoard(WINDOW* gameBoard) {
-		int rowHandle = (19 - pushBoxGame.getRow()) / 2;
-		int colHandle = (40 - pushBoxGame.getCol() * 2) / 2;
+		int rowHandle = (19 - pushBoxGame->getRow()) / 2;
+		int colHandle = (40 - pushBoxGame->getCol() * 2) / 2;
 		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 20; j++) {
-				switch (pushBoxGame.getMap(i, j / 2))
+				switch (pushBoxGame->getMap(i, j / 2))
 				{
 				case EMPTY:
 					wattron(gameBoard, COLOR_PAIR(2));
@@ -98,7 +97,13 @@ public:
 		renderTimeBoard(timeBoard);
 		renderGameBoard(gameBoard);
 	}
+	void renderInit(WINDOW* levelBoard, WINDOW* stepBoard, WINDOW* pushBoard, WINDOW* timeBoard) {
+		mvwprintw(levelBoard, 1, 8, "   ");
+		mvwprintw(stepBoard, 1, 8, "   ");
+		mvwprintw(pushBoard, 1, 8, "   ");
+		mvwprintw(timeBoard, 1, 8, "   ");
+	}
 
 private:
-	PushBoxGame pushBoxGame;
+	PushBoxGame *pushBoxGame;
 };

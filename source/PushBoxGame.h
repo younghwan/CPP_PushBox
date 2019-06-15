@@ -57,8 +57,8 @@ public:
 	}
 	void setUserPos(const Coordinates& input)
 	{
-		this->userPosition.x = input.x;
-		this->userPosition.y = input.y;
+		userPosition.x = input.x;
+		userPosition.y = input.y;
 		return;
 	}
 	int getStep()
@@ -67,7 +67,7 @@ public:
 	}
 	void addStep()
 	{
-		this->step++;
+		step+=1;
 		return;
 	};
 	int getPush()
@@ -81,7 +81,7 @@ public:
 	}
 	void stepClear()
 	{
-		this->step =0;
+		step =0;
 	}
 	void pushClear()
 	{

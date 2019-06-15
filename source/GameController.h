@@ -5,10 +5,10 @@
 class GameController {
 public:
 	GameController() {};
-	GameController(const PushBoxGame& model, const GameViewer& view)
+	GameController(PushBoxGame* model, GameViewer* view)
 	{
-		this->pushBoxGame = model;
-		this->gameViewer = view;
+		pushBoxGame = model;
+		gameViewer = view;
 	}
 	void setGoalPos(vector<Coordinates> goalposition);
 	void gameInitialize();
@@ -20,10 +20,10 @@ public:
 	void postProcessing();
 	bool isSuccess();
 	WINDOW* levelBoard, * stepBoard, * pushBoard, * timeBoard, * gameBoard;
-	PushBoxGame pushBoxGame;
 	void goNextLevel();
 
 private:
 	const int FINALLEVEL = 5;
-	GameViewer gameViewer;
+	PushBoxGame *pushBoxGame;
+	GameViewer *gameViewer;
 };

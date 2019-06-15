@@ -63,8 +63,8 @@ void GameController::gameDelete() {
 
 bool GameController::IsinMapNow()
 {
-	if (pushBoxGame.getX_userPos() < pushBoxGame.getRow() && pushBoxGame.getX_userPos() > 0 &&
-		pushBoxGame.getY_userPos() < pushBoxGame.getCol() && pushBoxGame.getY_userPos() > 0)
+	if (pushBoxGame->getX_userPos() < pushBoxGame->getRow() && pushBoxGame->getX_userPos() > 0 &&
+		pushBoxGame->getY_userPos() < pushBoxGame->getCol() && pushBoxGame->getY_userPos() > 0)
 	{
 		return true;
 	}
@@ -72,7 +72,7 @@ bool GameController::IsinMapNow()
 }
 bool GameController::IsinMapNow(int dy, int dx)
 {
-	if ((dx < pushBoxGame.getCol() && dx >0 && dy < pushBoxGame.getCol() && dy > 0))
+	if ((dx < pushBoxGame->getCol() && dx >0 && dy < pushBoxGame->getCol() && dy > 0))
 	{
 		return true;
 	}
@@ -86,15 +86,15 @@ bool GameController::CheckPosition(Coordinates userposition)
 		return false;
 	}
 
-	int dx = pushBoxGame.getX_userPos() + userposition.x;
-	int dy = pushBoxGame.getY_userPos() + userposition.y;
+	int dx = pushBoxGame->getX_userPos() + userposition.x;
+	int dy = pushBoxGame->getY_userPos() + userposition.y;
 
 	if (!IsinMapNow(dy, dx))
 	{
 		return false;
 	};
 
-	if (pushBoxGame.getMap(dy, dx) == 1)
+	if (pushBoxGame->getMap(dy, dx) == 1)
 	{
 		return false;
 	}
@@ -108,75 +108,76 @@ void GameController::setGoalPos(vector<Coordinates> goalList)
 		int goalX = goalList[i].x;
 		int goalY = goalList[i].y;
 
-		if(pushBoxGame.getMap(goalY,goalX) == EMPTY)
+		if(pushBoxGame->getMap(goalY,goalX) == EMPTY)
 		{
-			pushBoxGame.setMap(Coordinates(goalY, goalX), GOAL);
+			pushBoxGame->setMap(Coordinates(goalY, goalX), GOAL);
 		}
 	}	
 }
 void GameController::move(Coordinates userposition)
 {
-	pushBoxGame.addStep();
+	pushBoxGame->addStep();
 	
-	int curX = pushBoxGame.getX_userPos();
-	int curY = pushBoxGame.getY_userPos();
+	int curX = pushBoxGame->getX_userPos();
+	int curY = pushBoxGame->getY_userPos();
 
 	int nextX = curX + userposition.x;
 	int nextY = curY + userposition.y;
 
-	pushBoxGame.setX_userPos(nextX);
-	pushBoxGame.setY_userPos(nextY);
+	pushBoxGame->setX_userPos(nextX);
+	pushBoxGame->setY_userPos(nextY);
 
-	if (pushBoxGame.getMap(nextY, nextX) == WALL)
+	if (pushBoxGame->getMap(nextY, nextX) == WALL)
 	{
 		return;
 	}
 
 
 	//BOX를 밀때
-	if (pushBoxGame.getMap(nextY, nextX) == BOX)
+	if (pushBoxGame->getMap(nextY, nextX) == BOX)
 	{
 		int nextPosBox_X = nextX + userposition.x;
 		int nextPosBox_Y = nextY + userposition.y;
 
-		if (pushBoxGame.getMap(nextPosBox_Y, nextPosBox_X)
-			== BOX || pushBoxGame.getMap(nextPosBox_Y, nextPosBox_X) == WALL)
+		if (pushBoxGame->getMap(nextPosBox_Y, nextPosBox_X)
+			== BOX || pushBoxGame->getMap(nextPosBox_Y, nextPosBox_X) == WALL)
 		{
 			return;
 		}
 
-		pushBoxGame.setMap(Coordinates(curY, curX), EMPTY);
-		pushBoxGame.setMap(Coordinates(nextY, nextX), PLAYER);
-		pushBoxGame.setMap(Coordinates(nextPosBox_Y, nextPosBox_X), BOX);
-		pushBoxGame.addPush();
+		pushBoxGame->setMap(Coordinates(curY, curX), EMPTY);
+		pushBoxGame->setMap(Coordinates(nextY, nextX), PLAYER);
+		pushBoxGame->setMap(Coordinates(nextPosBox_Y, nextPosBox_X), BOX);
+		pushBoxGame->addPush();
 		return;
 	}
-	pushBoxGame.setMap(Coordinates(curY, curX), EMPTY);
-	pushBoxGame.setMap(Coordinates(nextY, nextX), PLAYER);
+	pushBoxGame->setMap(Coordinates(curY, curX), EMPTY);
+	pushBoxGame->setMap(Coordinates(nextY, nextX), PLAYER);
 
 }
 
 void GameController::postProcessing()
 {
-	setGoalPos(pushBoxGame.getGoalList());
-	gameViewer.renderAll(levelBoard, stepBoard, pushBoard, timeBoard, gameBoard);
+	setGoalPos(pushBoxGame->getGoalList());
+	gameViewer->renderAll(levelBoard, stepBoard, pushBoard, timeBoard, gameBoard);
 
 	if (isSuccess()) {
 		vector<int> rec;
-		rec.push_back(pushBoxGame.getStep());
-		rec.push_back(pushBoxGame.getPush());
+		rec.push_back(pushBoxGame->getStep());
+		rec.push_back(pushBoxGame->getPush());
 		//rec.push_back((int)(startTimer - endTimer));
-		pushBoxGame.addRecords(rec);
-		if (pushBoxGame.getLevel() == FINALLEVEL) {
+		pushBoxGame->addRecords(rec);
+		if (pushBoxGame->getLevel() == FINALLEVEL) {
 			//cout << "##### Congraturation! You complete final level #####" << endl;
 		}
 		else {
 			//cout << "############## SUCCESS ##############" << endl;
-			pushBoxGame.setLevel(pushBoxGame.getLevel() + 1);
-			pushBoxGame.stepClear();
-			pushBoxGame.pushClear();
-			pushBoxGame.readMap();
-			gameViewer.renderAll(levelBoard, stepBoard, pushBoard, timeBoard, gameBoard);
+			pushBoxGame->setLevel(pushBoxGame->getLevel() + 1);
+			pushBoxGame->stepClear();
+			pushBoxGame->pushClear();
+			pushBoxGame->readMap();
+			gameViewer->renderInit(levelBoard, stepBoard, pushBoard, timeBoard);
+			gameViewer->renderAll(levelBoard, stepBoard, pushBoard, timeBoard, gameBoard);
 		}
 	}
 	return;
@@ -184,10 +185,10 @@ void GameController::postProcessing()
 
 bool GameController::isSuccess()
 {
-	for (int i = 0; i < pushBoxGame.getGoalList().size(); i++) {
-		int x = pushBoxGame.getGoalList()[i].x;
-		int y = pushBoxGame.getGoalList()[i].y;
-		if (pushBoxGame.getMap(y, x) == 2) {
+	for (int i = 0; i < pushBoxGame->getGoalList().size(); i++) {
+		int x = pushBoxGame->getGoalList()[i].x;
+		int y = pushBoxGame->getGoalList()[i].y;
+		if (pushBoxGame->getMap(y, x) == 2) {
 			continue;
 		}
 		else {
@@ -196,13 +197,13 @@ bool GameController::isSuccess()
 	}
 	return true;
 }
-
 void GameController::goNextLevel()
 {
-	for (int i = 0; i < pushBoxGame.getGoalList().size(); i++) {
-		int x = pushBoxGame.getGoalList()[i].x;
-		int y = pushBoxGame.getGoalList()[i].y;
-		pushBoxGame.setMap(Coordinates(y, x), 2);
+	for (int i = 0; i < pushBoxGame->getGoalList().size(); i++) {
+		int x = pushBoxGame->getGoalList()[i].x;
+		int y = pushBoxGame->getGoalList()[i].y;
+		pushBoxGame->setMap(Coordinates(y, x), 2);
+		pushBoxGame->stepClear();
 	}
 	return;
 }

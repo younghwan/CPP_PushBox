@@ -3,8 +3,8 @@
 int main()
 {
 	PushBoxGame pushBoxGame;
-	GameViewer gameViewer(pushBoxGame);
-	GameController gameController(pushBoxGame, gameViewer);
+	GameViewer gameViewer(&pushBoxGame);
+	GameController gameController(&pushBoxGame, &gameViewer);
 
 	gameController.gameInitialize();
 	gameViewer.renderAll(gameController.levelBoard, gameController.stepBoard, gameController.pushBoard, gameController.timeBoard, gameController.gameBoard);
@@ -13,7 +13,7 @@ int main()
 			for (int j = 0; j < 10; j++) {
 				if (pushBoxGame.getMap(i, j) == 5)
 				{
-					gameController.pushBoxGame.setUserPos(Coordinates(j, i));
+					pushBoxGame.setUserPos(Coordinates(j, i));
 				}
 			}
 		}
