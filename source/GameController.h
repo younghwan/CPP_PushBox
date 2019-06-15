@@ -17,14 +17,16 @@ public:
 	bool IsinMapNow(int dy, int dx);
 	bool CheckPosition(Coordinates userPos);
 	void move(Coordinates userPos);
-	void postProcessing();
+	bool postProcessing();
 	bool isSuccess();
 	WINDOW* levelBoard, * stepBoard, * pushBoard, * resetBoard, * gameBoard;
 	void goNextLevel();
 	void reset();
 	void startGame();
+	bool showResult();
+
 private:
 	const int FINALLEVEL = 5;
-	PushBoxGame *pushBoxGame;
-	GameViewer *gameViewer;
+	PushBoxGame* pushBoxGame;
+	GameViewer* gameViewer;
 };

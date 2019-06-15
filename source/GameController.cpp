@@ -13,7 +13,8 @@ void GameController::gameInitialize() {
 	init_pair(4, COLOR_WHITE, COLOR_YELLOW); //BOX color
 	init_pair(5, COLOR_WHITE, COLOR_GREEN); //GOAL color
 	init_pair(6, COLOR_WHITE, COLOR_RED); //PLAYER color
-	init_pair(7, COLOR_WHITE, COLOR_CYAN);
+	init_pair(7, COLOR_WHITE, COLOR_CYAN); //Start menu color
+	init_pair(8, COLOR_RED, COLOR_BLACK); //result color
 
 	attron(COLOR_PAIR(7));
 	mvprintw(6, 18, "                               ");
@@ -28,10 +29,10 @@ void GameController::gameInitialize() {
 	attroff(COLOR_PAIR(6));
 
 	mvprintw(19, 24, "Press \'S\' to start");
-	
+
 	while (1) {
 		char temp = getch();
-		if (temp != 's' && temp != 'S'  ) {
+		if (temp != 's' && temp != 'S') {
 			continue;
 		}
 		else
@@ -93,21 +94,21 @@ bool GameController::CheckPosition(Coordinates userposition)
 
 void GameController::setGoalPos(vector<Coordinates> goalList)
 {
-	for(int i = 0; i<goalList.size(); i++)
+	for (int i = 0; i < goalList.size(); i++)
 	{
 		int goalX = goalList[i].x;
 		int goalY = goalList[i].y;
 
-		if(pushBoxGame->getMap(goalY,goalX) == EMPTY)
+		if (pushBoxGame->getMap(goalY, goalX) == EMPTY)
 		{
 			pushBoxGame->setMap(Coordinates(goalY, goalX), GOAL);
 		}
-	}	
+	}
 }
 void GameController::move(Coordinates userposition)
 {
 	pushBoxGame->addStep();
-	
+
 	int curX = pushBoxGame->getX_userPos();
 	int curY = pushBoxGame->getY_userPos();
 
@@ -118,7 +119,6 @@ void GameController::move(Coordinates userposition)
 	{
 		return;
 	}
-
 
 	//BOX를 밀때
 	if (pushBoxGame->getMap(nextY, nextX) == BOX)
@@ -144,7 +144,7 @@ void GameController::move(Coordinates userposition)
 	pushBoxGame->setUserPos(Coordinates(nextX, nextY));
 }
 
-void GameController::postProcessing()
+bool GameController::postProcessing()
 {
 	setGoalPos(pushBoxGame->getGoalList());
 	gameViewer->renderAll(levelBoard, stepBoard, pushBoard, resetBoard, gameBoard);
@@ -153,17 +153,22 @@ void GameController::postProcessing()
 		vector<int> rec;
 		rec.push_back(pushBoxGame->getStep());
 		rec.push_back(pushBoxGame->getPush());
+		rec.push_back(pushBoxGame->getReset());
 		pushBoxGame->addRecords(rec);
 		if (pushBoxGame->getLevel() == FINALLEVEL) {
-			//cout << "##### Congraturation! You complete final level #####" << endl;
+			return showResult();
 		}
 		else {
-			//cout << "############## SUCCESS ##############" << endl;
 			pushBoxGame->setLevel(pushBoxGame->getLevel() + 1);
-			reset();
+			pushBoxGame->stepClear();
+			pushBoxGame->pushClear();
+			pushBoxGame->resetClear();
+			pushBoxGame->readMap();
+			gameViewer->renderInit(levelBoard, stepBoard, pushBoard, resetBoard);
+			gameViewer->renderAll(levelBoard, stepBoard, pushBoard, resetBoard, gameBoard);
 		}
 	}
-	return;
+	return false;
 }
 
 bool GameController::isSuccess()
@@ -186,7 +191,6 @@ void GameController::goNextLevel()
 		int x = pushBoxGame->getGoalList()[i].x;
 		int y = pushBoxGame->getGoalList()[i].y;
 		pushBoxGame->setMap(Coordinates(y, x), 2);
-		pushBoxGame->stepClear();
 	}
 	return;
 }
@@ -208,7 +212,7 @@ void  GameController::startGame()
 	mvprintw(24, 23, "Press \'r\' to reset ");
 	refresh();
 
-	gameBoard = newwin(15, 38, 8, 4);  // 19, 40, 6, 2
+	gameBoard = newwin(15, 38, 8, 4);
 	levelBoard = newwin(3, 13, 8, 45);
 	stepBoard = newwin(3, 13, 12, 45);
 	pushBoard = newwin(3, 13, 16, 45);
@@ -241,4 +245,28 @@ void  GameController::startGame()
 	wrefresh(pushBoard);
 	wrefresh(resetBoard);
 	wrefresh(gameBoard);
+}
+bool GameController::showResult()
+{
+	clear();
+	gameViewer->renderResult();
+	while (1) {
+		char t = getch();
+		if (t == 'q' || t == 'Q') {
+			return true;
+		}
+		else if (t == 'n' || t == 'N') {
+			pushBoxGame->setLevel(1);
+			pushBoxGame->clearRecords();
+			pushBoxGame->resetClear();
+			pushBoxGame->readMap();
+			clear();
+			startGame();
+			gameViewer->renderAll(levelBoard, stepBoard, pushBoard, resetBoard, gameBoard);
+			return false;
+		}
+		else {
+			continue;
+		}
+	}
 }

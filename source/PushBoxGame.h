@@ -67,7 +67,7 @@ public:
 	}
 	void addStep()
 	{
-		step+=1;
+		step += 1;
 		return;
 	};
 	int getPush()
@@ -81,11 +81,11 @@ public:
 	}
 	void stepClear()
 	{
-		step =0;
+		step = 0;
 	}
 	void pushClear()
 	{
-		this->push =0;
+		this->push = 0;
 	}
 	int getReset()
 	{
@@ -98,7 +98,7 @@ public:
 	}
 	void resetClear()
 	{
-		step = 0;
+		reset = 0;
 	}
 	void setX_userPos(const int& input)
 	{
@@ -130,6 +130,9 @@ public:
 	}
 	void addRecords(vector<int> input) {
 		records.push_back(input);
+	}
+	void clearRecords() {
+		records.clear();
 	}
 	void readMap()
 	{
