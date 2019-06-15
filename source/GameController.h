@@ -22,7 +22,7 @@ public:
 	WINDOW* levelBoard, * stepBoard, * pushBoard, * resetBoard, * gameBoard;
 	void goNextLevel();
 	void reset();
-
+	void startGame();
 private:
 	const int FINALLEVEL = 5;
 	PushBoxGame *pushBoxGame;

@@ -10,7 +10,10 @@ public:
 	{
 		pushBoxGame = model;
 	}
+	void startview(WINDOW* startMenu) {
 
+		startMenu = newwin(19, 40, 6, 2);
+	}
 	void renderLevelBoard(WINDOW* levelBoard) {
 		mvwprintw(levelBoard, 1, 8, "%d", pushBoxGame->getLevel());
 		wrefresh(levelBoard);
@@ -32,8 +35,8 @@ public:
 		return;
 	}
 	void renderGameBoard(WINDOW* gameBoard) {
-		int rowHandle = (19 - pushBoxGame->getRow()) / 2;
-		int colHandle = (40 - pushBoxGame->getCol() * 2) / 2;
+		int rowHandle = (15 - pushBoxGame->getRow()) / 2;
+		int colHandle = (38 - pushBoxGame->getCol() * 2) / 2 + 1;
 		int ux = pushBoxGame->getX_userPos();
 		int uy = pushBoxGame->getY_userPos();
 		char temp = pushBoxGame->getMap(uy, ux);
@@ -106,7 +109,6 @@ public:
 		mvwprintw(pushBoard, 1, 8, "   ");
 		mvwprintw(resetBoard, 1, 8, "   ");
 	}
-
 private:
 	PushBoxGame *pushBoxGame;
 };
