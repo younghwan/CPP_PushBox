@@ -26,9 +26,11 @@ int main()
 			gameController.move(Coordinates(-1, 0));
 			break;
 		case 'n':
+		case 'N':
 			gameController.goNextLevel();
 			break;
 		case 'r':
+		case 'R':
 			gameController.reset();
 			break;
 		}

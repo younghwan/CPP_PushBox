@@ -13,43 +13,32 @@ void GameController::gameInitialize() {
 	init_pair(4, COLOR_WHITE, COLOR_YELLOW); //BOX color
 	init_pair(5, COLOR_WHITE, COLOR_GREEN); //GOAL color
 	init_pair(6, COLOR_WHITE, COLOR_RED); //PLAYER color
-	mvprintw(2, 20, "P U S H    B O X    G A M E");
-	mvprintw(25, 13, "Press \'r\' to reset ");
-	refresh();
+	init_pair(7, COLOR_WHITE, COLOR_CYAN);
 
-	gameBoard = newwin(19, 40, 6, 2);
-	levelBoard = newwin(3, 13, 8, 45);
-	stepBoard = newwin(3, 13, 12, 45);
-	pushBoard = newwin(3, 13, 16, 45);
-	resetBoard = newwin(3, 13, 20, 45);
-	wbkgd(levelBoard, COLOR_PAIR(1));
-	wattron(levelBoard, COLOR_PAIR(1));
-	wbkgd(stepBoard, COLOR_PAIR(1));
-	wattron(stepBoard, COLOR_PAIR(1));
-	wbkgd(pushBoard, COLOR_PAIR(1));
-	wattron(pushBoard, COLOR_PAIR(1));
-	wbkgd(resetBoard, COLOR_PAIR(1));
-	wattron(resetBoard, COLOR_PAIR(1));
+	attron(COLOR_PAIR(7));
+	mvprintw(6, 18, "                               ");
+	mvprintw(7, 18, "  P U S H    B O X    G A M E  ");
+	mvprintw(8, 18, "                               ");
+	attroff(COLOR_PAIR(7));
+	attron(COLOR_PAIR(6));
+	mvprintw(12, 28, "          ");
+	mvprintw(13, 28, "   |  |   ");
+	mvprintw(14, 28, "          ");
+	mvprintw(15, 28, "          ");
+	attroff(COLOR_PAIR(6));
 
-	mvwprintw(levelBoard, 1, 1, "Level: ");
-	mvwprintw(levelBoard, 1, 8, " ");
-	mvwprintw(stepBoard, 1, 1, "Move: ");
-	mvwprintw(stepBoard, 1, 8, " ");
-	mvwprintw(pushBoard, 1, 1, "Push: ");
-	mvwprintw(pushBoard, 1, 8, " ");
-	mvwprintw(resetBoard, 1, 1, "Reset: ");
-	mvwprintw(resetBoard, 1, 8, " ");
-	wborder(levelBoard, '|', '|', '-', '-', '+', '+', '+', '+');
-	wborder(stepBoard, '|', '|', '-', '-', '+', '+', '+', '+');
-	wborder(pushBoard, '|', '|', '-', '-', '+', '+', '+', '+');
-	wborder(resetBoard, '|', '|', '-', '-', '+', '+', '+', '+');
-	wborder(gameBoard, '|', '|', '-', '-', '+', '+', '+', '+');
-
-	wrefresh(levelBoard);
-	wrefresh(stepBoard);
-	wrefresh(pushBoard);
-	wrefresh(resetBoard);
-	wrefresh(gameBoard);
+	mvprintw(19, 24, "Press \'S\' to start");
+	
+	while (1) {
+		char temp = getch();
+		if (temp != 's' && temp != 'S'  ) {
+			continue;
+		}
+		else
+			break;
+	}
+	clear();
+	startGame();
 }
 
 void GameController::gameDelete() {
@@ -211,4 +200,45 @@ void GameController::reset()
 	gameViewer->renderAll(levelBoard, stepBoard, pushBoard, resetBoard, gameBoard);
 	pushBoxGame->addReset();
 	return;
+}
+
+void  GameController::startGame()
+{
+	mvprintw(3, 18, "P U S H    B O X    G A M E");
+	mvprintw(24, 23, "Press \'r\' to reset ");
+	refresh();
+
+	gameBoard = newwin(15, 38, 8, 4);  // 19, 40, 6, 2
+	levelBoard = newwin(3, 13, 8, 45);
+	stepBoard = newwin(3, 13, 12, 45);
+	pushBoard = newwin(3, 13, 16, 45);
+	resetBoard = newwin(3, 13, 20, 45);
+	wbkgd(levelBoard, COLOR_PAIR(1));
+	wattron(levelBoard, COLOR_PAIR(1));
+	wbkgd(stepBoard, COLOR_PAIR(1));
+	wattron(stepBoard, COLOR_PAIR(1));
+	wbkgd(pushBoard, COLOR_PAIR(1));
+	wattron(pushBoard, COLOR_PAIR(1));
+	wbkgd(resetBoard, COLOR_PAIR(1));
+	wattron(resetBoard, COLOR_PAIR(1));
+
+	mvwprintw(levelBoard, 1, 1, "Level: ");
+	mvwprintw(levelBoard, 1, 8, " ");
+	mvwprintw(stepBoard, 1, 1, "Move: ");
+	mvwprintw(stepBoard, 1, 8, " ");
+	mvwprintw(pushBoard, 1, 1, "Push: ");
+	mvwprintw(pushBoard, 1, 8, " ");
+	mvwprintw(resetBoard, 1, 1, "Reset: ");
+	mvwprintw(resetBoard, 1, 8, " ");
+	wborder(levelBoard, '|', '|', '-', '-', '+', '+', '+', '+');
+	wborder(stepBoard, '|', '|', '-', '-', '+', '+', '+', '+');
+	wborder(pushBoard, '|', '|', '-', '-', '+', '+', '+', '+');
+	wborder(resetBoard, '|', '|', '-', '-', '+', '+', '+', '+');
+	wborder(gameBoard, '|', '|', '-', '-', '+', '+', '+', '+');
+
+	wrefresh(levelBoard);
+	wrefresh(stepBoard);
+	wrefresh(pushBoard);
+	wrefresh(resetBoard);
+	wrefresh(gameBoard);
 }
