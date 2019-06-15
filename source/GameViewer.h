@@ -109,6 +109,30 @@ public:
 		mvwprintw(pushBoard, 1, 8, "   ");
 		mvwprintw(resetBoard, 1, 8, "   ");
 	}
+	void renderResult() {
+		attron(COLOR_PAIR(8));
+		mvprintw(2, 27, "S C O R E");
+		attroff(COLOR_PAIR(8));
+		int score = 1000000, step, push, reset;
+		for (int i = 0; i < pushBoxGame->getRecords().size(); i++) {
+			step = pushBoxGame->getRecords()[i][0];
+			push = pushBoxGame->getRecords()[i][1];
+			reset = pushBoxGame->getRecords()[i][2];
+			score -= step * 649 + push * 2646 + reset * 47332;
+			mvprintw(5 + i * 2, 9, "Level %d", i + 1);
+			mvprintw(5 + i * 2, 24, "Step %d", step);
+			mvprintw(5 + i * 2, 34, "Push %d", push);
+			mvprintw(5 + i * 2, 44, "Reset %d", reset);
+		}
+		if (score < 0) score = 0;
+		attron(COLOR_PAIR(2));
+		mvprintw(18, 0, "                                                                 ", score);
+		mvprintw(19, 0, "                      Total Score: %d                             ", score);
+		mvprintw(20, 0, "                                                                 ", score);
+		attroff(COLOR_PAIR(2));
+		mvprintw(22, 18, "Press \'n\' to start new game");
+		mvprintw(23, 18, "Press \'q\' to quit the game");
+	}
 private:
-	PushBoxGame *pushBoxGame;
+	PushBoxGame* pushBoxGame;
 };

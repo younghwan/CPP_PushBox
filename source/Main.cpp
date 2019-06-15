@@ -25,19 +25,22 @@ int main()
 		case KEY_LEFT: //left
 			gameController.move(Coordinates(-1, 0));
 			break;
-		case 'n':
-		case 'N':
+		case KEY_HOME:
 			gameController.goNextLevel();
 			break;
 		case 'r':
 		case 'R':
 			gameController.reset();
 			break;
+		case 'q':
+		case 'Q':
+			goto end;
+			break;
 		}
-		gameController.postProcessing();
+		bool t = gameController.postProcessing();
+		if (t) goto end;
 	}
-
-	getch();
+end:
 	gameController.gameDelete();
 
 	return 0;
